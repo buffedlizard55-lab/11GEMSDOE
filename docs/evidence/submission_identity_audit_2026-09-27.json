@@ -1,0 +1,56 @@
+{
+  "checked_utc": "2026-09-27",
+  "method": "Fetched public GitHub artifacts from the repositories/paths listed below, computed SHA-256, compared exact bytes, and ran scripts/audit_submissions.py with the hash-verified sample submission grid.",
+  "confirmed_same_artifact": [
+    {
+      "files": [
+        "https://github.com/buffedlizard55-lab/5GEMSDOE/blob/main/data/evidence/leaderboard_anchor/gemsdoe-ens12-adopted-7f00890a.tif",
+        "https://github.com/buffedlizard55-lab/GEMSDOE/blob/main/data/evidence/runs/ens12-adopted-floor0.1-w0/submission.tif",
+        "https://github.com/buffedlizard55-lab/7GEMSDOE/blob/main/external/scored/gemsdoe1-ens12-7f00890a.tif"
+      ],
+      "bytes": 570890,
+      "sha256": "7f00890a62878d612fb5eef67a9a364a2df819433dde74b6762ce4fc0fc4fe15",
+      "same_grid_pixel_sha256": "98b1ad8cc17c83ac52c1835054bdbddd92df1a3b10fbf9182ea05e0dc5461fd9",
+      "raster_profile": {
+        "count": 1,
+        "dtype": "float32",
+        "crs": "EPSG:32611",
+        "width": 3292,
+        "height": 3730,
+        "transform": [100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0],
+        "finite_unmasked_pixels": 5167373,
+        "minimum": 0.0,
+        "maximum": 1.0,
+        "out_of_range_pixels": 0
+      },
+      "score_linkage": "5GEMSDOE's public leaderboard-anchor record associates this hash with extradr19 and 0.1563; the official public leaderboard checked 2026-09-27 showed extradr19 at 0.1563. The user's score report gives GEMSDOE1 0.1563.",
+      "conclusion": "The published GEMSDOE and 5GEMSDOE primary artifacts are exactly the same TIFF and prediction pixels. This explains why those two public scores match, subject to the limitation that the authenticated DrivenData upload receipt was not accessible here."
+    }
+  ],
+  "same_displayed_score_different_bytes": [
+    {
+      "project": "8GEMSDOE",
+      "user_reported_score": 0.1563,
+      "published_artifact": "https://github.com/buffedlizard55-lab/8GEMSDOE/blob/main/docs/downloads/submission.tif",
+      "git_blob_sha1": "d3aac36c0d38464793640b30920d2a3bea4c4143",
+      "size_bytes": 1285731,
+      "sha256": "b83ea0e7074882ceee31de89695281c00ade51f26a0a7048f628f60058755356",
+      "same_grid_pixel_sha256": "ff5976f83ba6eb3e8b6076fe9f7f1d511f6fbfbfbbba600a7e4e3c55242844fb",
+      "compared_to_shared_ens12": "different TIFF bytes and different canonical pixel values on the same grid",
+      "pixel_identity": "different; confirmed with the local raster audit tool and official template grid"
+    }
+  ],
+  "other_user_reported_scores": {
+    "GEMSDOE1": 0.1563,
+    "5GEMSDOE": 0.1563,
+    "GEMSDOE2": 0.1560,
+    "6GEMSDOE": 0.0286,
+    "7GEMSDOE": 0.1461,
+    "8GEMSDOE": 0.1563
+  },
+  "limits": [
+    "A public team repository is not an authenticated DrivenData upload receipt.",
+    "The project's other equal displayed scores may be rounded coincidences or additional reuse; compare each candidate's actual bytes and geospatial pixel arrays before concluding.",
+    "A pixel-equal artifact can have different TIFF bytes due to compression/tags; the canonical pixel hash in the local audit tool is storage-layout independent."
+  ]
+}
