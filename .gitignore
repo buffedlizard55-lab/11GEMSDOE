@@ -1,0 +1,13 @@
+# Local environments and caches
+.venv/
+.cache/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# Private/large competition inputs and generated experiment outputs
+/data/
+/outputs/
+/artifacts/
+*.aux.xml

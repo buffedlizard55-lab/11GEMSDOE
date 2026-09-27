@@ -1,0 +1,6 @@
+# Environment used for the H1 feature-build and GeoTIFF audit in this review.
+# The training harness itself is linked to the pinned 5GEMSDOE source commit in the evidence record.
+numpy==2.4.6
+rasterio==1.4.4
+scipy==1.17.1
+scikit-learn==1.9.1

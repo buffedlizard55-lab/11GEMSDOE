@@ -1,0 +1,97 @@
+{
+  "experiment_id": "H1-strain-structure-tensor-2026-09-27",
+  "status": "screened_no_improvement_no_submission",
+  "created_utc": "2026-09-27",
+  "question": "Does a multi-scale strain-gradient structure-tensor channel improve the existing geophysical/topographic/radiometric context detector on a spatially blocked holdout?",
+  "data_provenance": {
+    "retrieval": "Read-only sparse checkout of public team repository buffedlizard55-lab/5GEMSDOE at commit 6e8d28ba407b5d748de5b3e94635c41d95e35354; assembled only in excluded .cache/; no data rasters added to this repo.",
+    "bridge_manifest_url": "https://github.com/buffedlizard55-lab/5GEMSDOE/blob/6e8d28ba407b5d748de5b3e94635c41d95e35354/data/bridge/manifest.json",
+    "training_script_url": "https://github.com/buffedlizard55-lab/5GEMSDOE/blob/6e8d28ba407b5d748de5b3e94635c41d95e35354/scripts/train_context_detector.py",
+    "external_auxiliary_hashes": {
+      "topo_u8_sha256": "a6398d9950965dec6aae6ccecdaa6ced48645d133eab222cbdd11def9bdabfa4",
+      "radiometric_u8_sha256": "6cb051f70f941fd78028fe66a9f71e87204fcd8d9a85903df0b94993bad1ec4d"
+    },
+    "manifest": "data/bridge/manifest.json in that repository; SHA-256 of each assembled full file independently matched the manifest.",
+    "features_sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+    "labels_sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+    "sample_submission_sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
+    "direct_official_portal": "The official DrivenData data tab redirected to login in this environment. The mirrored bytes match the pinned repository manifest, whose provenance describes the competition-page Dropbox mirrors; that origin chain is repository-recorded rather than independently re-downloaded from DrivenData here.",
+    "grid": {
+      "width": 3292,
+      "height": 3730,
+      "bands": 19,
+      "crs": "EPSG:32611",
+      "transform": [100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0],
+      "valid_template_pixels": 5167373,
+      "catalogue_fault_pixels": 60988
+    }
+  },
+  "method": {
+    "feature_builder": "scripts/build_strain_coherence.py",
+    "feature_builder_sha256": "e4e4722aec4e4d53817247d2ec96506157e289a1b6a4bc25bd4dc36e511432de",
+    "feature_builder_output_sha256_ephemeral": "415d9510105ba49fc546747720c3232dd357584a9c903705337d282b9fb9f95f",
+    "control_runner_report_sha256_ephemeral": "5b878ad1e2684a68abc1a3d77c3a4bd8c942b1a53f11ce294c840e042cd901cb",
+    "h1_runner_report_sha256_ephemeral": "ee2241b249919a553c5306b7dbf220417c5e084f96fed1b2fe5339936806b111",
+    "candidate_channels": 8,
+    "candidate_channels_detail": "coherence, cos(2*orientation), sin(2*orientation), and log edge energy at Gaussian structure-tensor sigmas 2.5 and 7.5 pixels (approximately 0.5 km and 1.5 km)",
+    "source_bands": {
+      "geod_2ndinv": 4,
+      "geod_shearrate": 7,
+      "geod_dilaterate": 8
+    },
+    "control_auxiliary_data": "9-band topographic feature raster and 7-band radiometric raster, SHA-256 verified against their public bridge manifests; same inputs used in both arms.",
+    "model": "scikit-learn HistGradientBoostingClassifier from scripts/train_context_detector.py at the pinned 5GEMSDOE commit; same 19+16 feature control model versus 19+16+8 H1 model",
+    "classifier_parameters": {
+      "max_iter": 200,
+      "learning_rate": 0.08,
+      "max_leaf_nodes": 31,
+      "min_samples_leaf": 20,
+      "l2_regularization": 1.0,
+      "early_stopping": true,
+      "validation_fraction": 0.1,
+      "n_iter_no_change": 15,
+      "random_state": 42,
+      "class_weight": null
+    },
+    "parameters": {
+      "folds": 4,
+      "spatial_block_pixels": 512,
+      "block_size_km_at_100m": 51.2,
+      "training_collar_pixels": 3,
+      "negative_sample_target": 400000,
+      "seed": 42,
+      "max_iter": 200,
+      "learning_rate": 0.08
+    },
+    "fold_geometry": "Deterministic balanced assignment of contiguous 512x512 blocks into four folds; 3-pixel collar around held-out geography excluded from training.",
+    "scoring_adjustment": "For validation scores, fold truth was restricted to labels in the held-out blocks only (matching the new-fault-only target more closely); predictions were evaluated only in those blocks, while the 300 m neighborhood around held-out truths remained available for TP credit. False-positive distance weights used held-out labels only, not catalogue labels from training folds.",
+    "scoring_patch_applied_to_pinned_runner": "For each fold: sc_mask = scored_mask((H, W), block_px, fold_of, fold); fold_ctx = GtContext((labels & sc_mask).astype(np.float32), DEFAULT_R_PIXELS); score_within_mask(prob, fold_ctx, sc_mask). The same fold_ctx/sc_mask pair was used for each fixed-threshold sweep.",
+    "baseline_rerun_note": "The prior team's saved context-detector reports use global catalogue geometry for FP weighting. Those scores are not directly compared here; both control and H1 were freshly rerun with the identical held-out-label-only scoring patch.",
+    "metric": "Official distance-weighted Tversky definition: alpha=0.2, beta=0.8, triangular distance support=300 m (3 pixels). Predictions thresholded at 0.20 for the preregistered comparison.",
+    "threshold_note": "0.20 was the top threshold among the control's tested sweep for this run. It was fixed and applied equally to the H1 arm; this same-holdout threshold selection makes the result a screening comparison, not an unbiased final estimate."
+  },
+  "results": {
+    "control": {
+      "name": "official features + existing topographic/radiometric channels",
+      "dti_at_threshold_0_20_aggregate": 0.149986,
+      "mean_of_4_fold_dti": 0.153418,
+      "fold_scores": [0.17729, 0.16877, 0.12654, 0.14107]
+    },
+    "h1": {
+      "name": "control channels + H1 strain structure-tensor channels",
+      "dti_at_threshold_0_20_aggregate": 0.149795,
+      "mean_of_4_fold_dti": 0.152903,
+      "fold_scores": [0.17544, 0.16590, 0.12849, 0.14178]
+    },
+    "paired_fold_delta_h1_minus_control": [-0.00185, -0.00287, 0.00195, 0.00071],
+    "aggregate_delta_h1_minus_control": -0.000191,
+    "decision": "H1 did not beat the paired control/current best screening score. Two folds declined and two improved; overall DTI was slightly lower. Treat this as no demonstrated improvement, not as proof that strain structure is useless. Do not submit H1."
+  },
+  "limitations": [
+    "These are local scores on withheld portions of the existing mapped-fault catalogue, not the private expert test set or confirmed catalogue-gap discoveries.",
+    "The data files were hash-verified against a public sibling-project bridge manifest, but were not fetched directly from the authenticated competition portal in this workspace.",
+    "One fixed seed and four spatial folds are a screening test; no block bootstrap or multi-seed confidence interval was produced.",
+    "Topographic/radiometric auxiliary channels came from team-published bridge artifacts and were held constant across the paired arms; their independent physical provenance is recorded in that bridge, not re-audited here beyond hashes and grid.",
+    "No contest submission file was generated from this experiment and no submission slot was used."
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "source": "https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/",
+  "fetched_at_utc": "2026-09-27",
+  "snapshot_scope": "Fallback snapshot of the first ten scored rows in the official rendered public leaderboard; the scheduled Pages workflow replaces this with all parsed scored rows when a refresh succeeds.",
+  "snapshot_complete": false,
+  "row_count": 10,
+  "leader": {
+    "rank": 1,
+    "participant": "DARD",
+    "score": "0.3049"
+  },
+  "rows": [
+    {"rank": 1, "participant": "DARD", "score": "0.3049"},
+    {"rank": 2, "participant": "alexoktaba", "score": "0.2993"},
+    {"rank": 3, "participant": "HardcoreTechGod", "score": "0.2854"},
+    {"rank": 4, "participant": "mzoorob", "score": "0.2843"},
+    {"rank": 5, "participant": "joeyfezster", "score": "0.2806"},
+    {"rank": 6, "participant": "GrigorSargsyan", "score": "0.2742"},
+    {"rank": 7, "participant": "xiaofanhu", "score": "0.2367"},
+    {"rank": 8, "participant": "exposed", "score": "0.2340"},
+    {"rank": 9, "participant": "hiii12345", "score": "0.2262"},
+    {"rank": 10, "participant": "tchu", "score": "0.2220"}
+  ]
+}

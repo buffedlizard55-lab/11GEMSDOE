@@ -1,0 +1,1 @@
+submission_id,submission_name,submitted_utc,public_score_displayed,local_holdout_score,holdout_experiment_id,prediction_sha256,pixel_sha256,model_version,code_commit,config_sha256,input_data_manifest_sha256,short_note,upload_status,notes
