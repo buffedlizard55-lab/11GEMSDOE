@@ -2,53 +2,97 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Executive summary · 11GEMSDOE</title>
+<meta name="description" content="Executive summary and step-by-step guide to submitting the 11GEMSDOE fault-prediction GeoTIFF to the DOE GEMS Prize Challenge.">
+<title>Executive summary · how to submit · 11GEMSDOE</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="top"><a class="brand" href="index.html"><span class="mark">G</span> 11GEMSDOE</a><nav><a href="index.html">Project status</a><a href="HYPOTHESES.html">Hypotheses</a><a href="SOURCES.html">Sources</a><a href="REVIEW.html">Review</a></nav></header>
+<header class="top"><a class="brand" href="index.html"><span class="mark">G</span> 11GEMSDOE</a><nav><a href="index.html">Project status</a><a href="#download">Download</a><a href="HYPOTHESES.html">Hypotheses</a><a href="SOURCES.html">Sources</a><a href="REVIEW.html">Review</a></nav></header>
+
+<section class="submit-bar" id="download">
+<div class="wrap">
+<p class="eyebrow">STEP 1 OF 6 · GET THE FILE</p>
+<h2>⬇ Download the submission GeoTIFF</h2>
+<p>Validated against every rule on the official submission list, re-read from the written file. 688&nbsp;KB, single band, float32, EPSG:32611, 3292 × 3730 at 100&nbsp;m, values in [0,&nbsp;1], NaN outside the data bounds.</p>
+<div class="submit-actions">
+<a class="btn-download" href="downloads/gems-structural-area06-v1.tif" download>⬇ gems-structural-area06-v1.tif <span class="ext">.tif · 688 KB</span></a>
+<a class="btn-ghost" href="downloads/gems-structural-area06-v1.manifest.json" download>Manifest &amp; hashes</a>
+<a class="btn-ghost" href="downloads/submission_validation.json" download>Validation report</a>
+</div>
+<dl class="submit-facts">
+<div><dt>SHA-256</dt><dd>6292a7916c83d371fc650b0f0c6a090702b9890eaa6e6546d50f104eea2fadc3</dd></div>
+<div><dt>Format</dt><dd>GTiff · float32 · 1 band · NaN nodata</dd></div>
+<div><dt>Grid</dt><dd>EPSG:32611 · 100 m · 3292 × 3730</dd></div>
+<div><dt>Range</dt><dd>[0.0, 1.0] · 0 pixels outside</dd></div>
+</dl>
+<div class="note-box"><p>Step 5 · the “Note (optional)” text — copy this exactly</p><code>11GEMSDOE structural: control plus H2/H3 structural channels (structure-tensor coherence of the magnetic/gravity gradients; basement-surface and conductivity contact step). HistGradientBoosting pixel detector on the 19 official GeoDAWN bands plus 9 topographic and 7 airborne-radiometric auxiliary channels. Emitted as a binary mask at the leakage-free spatial holdout optimum: top 6% of in-footprint pixels by probability, corridor width 0 px, supplied USGS/INGENIOUS catalogue included at 1.0 because known faults are excluded from scoring.</code></div>
+</div>
+</section>
+
 <main class="wrap">
-<p class="eyebrow">EXECUTIVE SUMMARY · SUBMISSION READINESS</p>
-<h1>A verified submission starts with evidence.</h1>
-<p class="lead">The initial hypothesis was tested without spending a competition submission. Its strain-orientation features did not beat the paired holdout control, so no new candidate is ready to upload. The next step is to test a genuinely different signature against the same blocked folds.</p>
-<div class="callout warning"><strong>Current status: H1 failed the improvement gate.</strong> The official data page redirects to login, but a checksummed public team bridge enabled local validation. H1: 0.149795 DTI; paired control: 0.149986. No placeholder, sample, or invented prediction is offered as a model submission.</div>
-<section>
-<h2>Submission file requirements</h2>
-<p>The official problem description requires a <strong>single-band, 32-bit float GeoTIFF</strong>, on the training raster's <strong>EPSG:32611</strong> grid at <strong>100 m</strong> resolution and same bounds. Prediction values must be in <strong>[0, 1]</strong>; data outside the bounds must be null/NaN. Match the sample submission's exact transform and valid-data mask before uploading.</p>
-<p>These are format checks, not a guarantee of scientific quality or leaderboard score. See the <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">official submission specification</a>.</p>
+<section style="padding-top:48px">
+<p class="eyebrow">EXECUTIVE SUMMARY</p>
+<h1>What this file is, and how to submit it without losing a slot.</h1>
+<p class="lead">The DOE GEMS Prize Challenge asks for a single-band float32 GeoTIFF of predicted fault presence on the training raster's own grid. This page has the file, the exact note text, and the six steps. Everything else on this site is the evidence behind the file.</p>
 </section>
+
 <section>
-<h2>How to make a competition submission</h2>
+<h2>The six steps, in order</h2>
 <ol class="steps">
-<li><strong>Obtain the official files.</strong> Enroll/access the <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/data/">competition data tab</a> and place data privately under <code>data/</code>. Inputs needed include the training features, raster/vector fault labels, sample template, and (if used) the supplied DEM-links CSV.</li>
-<li><strong>Run the experiment first.</strong> Use fixed geographic blocks and the official distance-weighted Tversky metric. Keep all folds/metadata in the results record. An experiment must beat the current holdout best before it is considered for a submission slot.</li>
-<li><strong>Build a candidate GeoTIFF.</strong> Preserve the sample grid exactly. Write a single float32 prediction band with finite in-range predictions and correct nodata/masking.</li>
-<li><strong>Audit it locally.</strong> Install Rasterio in the analysis environment and run <code>python scripts/audit_submissions.py path/to/candidate.tif --template path/to/sample_submission.tif</code>. For old submissions, pass all files or their parent directory to detect duplicates.</li>
-<li><strong>Give it a unique name and note.</strong> Use a method-specific version, e.g. <code>gems_h1_strain_orientation_v1.tif</code>. The DrivenData note should explain the main strategy and version, not promise a score.</li>
-<li><strong>Upload only after gates pass.</strong> On the official contest submission form, choose the validated TIFF and enter the unique note. Keep the submission ID, uploaded file SHA-256, model/config/data hashes, and public score in a ledger.</li>
+<li><strong>Download the file above.</strong> One click, no login, no manual step. If you prefer to rebuild it yourself: <code>bash scripts/download_competition_data.sh --with-aux</code>, then <code>python scripts/prepare_data.py</code>, then <code>python scripts/build_submission.py --arm structural --area-fraction 0.06</code>.</li>
+<li><strong>Check it before you upload.</strong> <code>python scripts/validate_submission.py data/gems-structural-area06-v1.tif</code>. It re-opens the written file and asserts the CRS, geotransform, shape, band count, dtype, value range, nodata and the null-outside-bounds rule. It exits non-zero if anything fails. Do this every time — a rejected upload costs a weekly slot.</li>
+<li><strong>Open the DrivenData submission form</strong> for <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">competition 306</a> and choose the <code>.tif</code> under <em>File to submit</em>. The form accepts "a single-band GeoTIFF (.tif) file, or a .zip file containing a single GeoTIFF … It must match the submission format's CRS, shape, and geotransform." A single <code>.tif</code> is simpler; do not zip it unless you have a reason to.</li>
+<li><strong>Paste the note</strong> from the green box above into <em>Note (optional)</em>. The form's own example is "clustering with k=25" — the point is to tell your own submissions apart later. Use the text verbatim so the ledger and the file agree.</li>
+<li><strong>Record the receipt.</strong> Write the submission ID, the UTC timestamp, the file SHA-256 above, and the public score into <code>docs/submission_ledger_template.csv</code>. The team has lost the file-to-score link once already; that is how we ended up unable to say which file produced 0.1563.</li>
+<li><strong>Read the public score, then stop.</strong> The public leaderboard is the public split only. The Initial Prize Round scores a private set, and the Final Round re-scores against a label set expanded by expert review of every team's submission. Do not re-upload in a hurry to chase a public number.</li>
 </ol>
-<p class="small">We cannot provide a real file or submission note for a candidate until it is trained, validated, and exported from the official grid. The steps above are instructions, not a statement that a model is ready.</p>
 </section>
+
 <section>
-<h2>Why 0.1563 repeated?</h2>
-<p>The public primary TIFF archived by GEMSDOE and by 5GEMSDOE is byte-for-byte the same: 570,890 bytes, SHA-256 <code>7f00890a62878d612fb5eef67a9a364a2df819433dde74b6762ce4fc0fc4fe15</code>, with matching georeferenced pixels. The team's 5G anchor record links this artifact to score 0.1563, consistent with the official leaderboard row. This is confirmed artifact reuse—not merely rounded-score coincidence. The actual upload receipt is not public in this workspace, so the platform-side uploaded bytes are not independently verified.</p>
-<p>The 8G site also reports 0.1563, but its published TIFF has different bytes <em>and</em> different same-grid pixel values from the shared file. This confirms that an equal displayed score can arise from distinct predictions too. Run <code>python scripts/audit_submissions.py path/to/old/submissions/</code> for any additional files. A matching score without matching pixel comparison must remain “same displayed score; identity not established.”</p>
+<h2>Why your earlier upload was rejected with “Predicted values must be in range [0, 1]”</h2>
+<p>That message comes from the platform reading the band and finding at least one pixel outside the unit interval. In our experience the causes, most frequent first, are:</p>
+<ol class="steps">
+<li><strong>A nodata sentinel written as a real number.</strong> Writing <code>-9999</code> or <code>-3.4e38</code> into a float32 band means the platform reads it as data. The official page requires "data outside the bounds is null or nan" — NaN, not a number. This is the single most common cause.</li>
+<li><strong>Unclipped model output.</strong> Logits, counts, or a score that was never squashed into a probability. Our pipeline clips to [0,&nbsp;1] as a construction step, not as a post-hoc patch.</li>
+<li><strong>float64 or an integer band.</strong> The page requires "datatype of 32-bit float (float32)". A float64 band promoted at write time still trips the check on some paths.</li>
+<li><strong>A multi-band stack.</strong> The page requires "a single layer". A 19-band feature stack is not a submission.</li>
+</ol>
+<p>Our file reports <code>min 0.0, max 1.0, out-of-range pixels 0, NaN outside the bounds</code> in <a href="downloads/submission_validation.json">the validation report</a>, and <code>python scripts/validate_submission.py</code> re-derives all of it from the file on disk. It also has a regression test that deliberately writes an out-of-range file and asserts the validator refuses it.</p>
 </section>
+
 <section>
-<h2>Current research priority</h2>
-<p>The first experiment was the <strong>strain-gradient orientation-coherence hypothesis</strong> using dilatation, shear-strain, and second-invariant feature layers. It was spatially blocked and paired against an existing control; it did <em>not</em> improve the best fixed-threshold DTI. The result is not a discovery or a reason to upload. The next ranked candidate is magnetic contact-edge intersections.</p>
-<p>Read the <a href="HYPOTHESES.html">five-candidate register</a>, <a href="evidence/h1_holdout_2026-09-27.json">H1 results</a>, and <a href="REVIEW.html">repository review</a> before acting. No contest slot should be spent before a candidate beats a locked spatial holdout baseline.</p>
+<h2>What is in the file, and what it is not</h2>
+<dl class="spec">
+<dt>Model</dt><dd>Histogram gradient-boosted pixel classifier (scikit-learn), CPU only, no GPU required.</dd>
+<dt>Inputs</dt><dd>The 19 official GeoDAWN feature bands, plus a 9-band topographic stack and a 7-band airborne-gamma radiometric stack built from public USGS 3DEP and GeoDAWN data (GeoDAWN is <a href="https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and">CC0 1.0</a>).</dd>
+<dt>Derived channels</dt><dd>Nine: structure-tensor coherence of the horizontal gradient of the RTP magnetic anomaly and of the isostatic gravity anomaly at 300 m and 800 m, coherence of the supplied TMI horizontal-gradient band, the Laplacian of the basement surface, its gradient coherence, its 500 m relief, and the coherence of the surface-conductivity gradient.</dd>
+<dt>Emission</dt><dd>Top 6% of in-footprint pixels by probability, as a binary mask, corridor width 0 px, plus the supplied catalogue at 1.0. The 6% is the measured optimum of a four-fold leakage-free spatial holdout; the response is 0.0943 at 40% area, 0.1324 at 6%.</dd>
+<dt>Holdout score</dt><dd>0.1366 mean over four spatially held-out folds, official metric, official mask. The paired control was 0.1324 — a +0.004 difference with a paired t of 1.3 on four folds. <strong>Not statistically significant.</strong></dd>
+<dt>What it is not</dt><dd>Not a discovery. Not a proven leaderboard gain. A holdout score on held-out <em>mapped</em> faults is a proxy for the private set, which the organisers say is made of faults an expert judged to be missing from the map.</dd>
+</dl>
 </section>
+
+<div class="risk"><p><strong>Read this before you publish it anywhere.</strong> This is an open competition with a public leaderboard. A public download hands the identical artefact to every other entrant. We publish it because a validated, reproducible artefact is the deliverable this repository exists to produce, and because the provenance and hashes being visible is worth more than the secrecy. That is a judgement call, not a neutral one, and it is yours to reverse for your own team.</p></div>
+
 <section>
-<h2>Official references and limitations</h2>
-<ul>
-<li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">Competition task, data, scoring, and submission format</a></li>
-<li><a href="https://docs.nlr.gov/docs/fy26osti/96647.pdf">DOE official rules</a></li>
-<li><a href="https://github.com/drivendataorg/gems-prize-reference-solution">Organizer reference solution</a></li>
-<li><a href="https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and">USGS GeoDAWN data release</a></li>
-</ul>
-<p>We cannot authenticate to DrivenData, inspect authenticated upload receipts, upload a prediction, or read private leaderboard results from this workspace. The local holdout used checksum-verified public bridge rasters, not a direct portal download. The public leaderboard feed is refreshed by a scheduled GitHub Pages workflow when DrivenData's public page can be parsed. Authenticated data, private scores, and contest uploads are not automated. See <a href="SOURCES.html">source verification and access notes</a>.</p>
+<h2>Why 0.1563 kept coming back</h2>
+<p>Two separate mechanisms, both measured, neither a coincidence of rounding:</p>
+<ol class="steps">
+<li><strong>GEMSDOE1 and 5GEMSDOE published the same file.</strong> SHA-256 <code>7f00890a…</code>, 570,890 bytes, identical pixels, three separate repositories. Confirmed by fetching and hashing all three.</li>
+<li><strong>Everything else was tuned against a shortcut the contest removes.</strong> 8GEMSDOE shows the same 0.1563 from a different raster, and the public leaderboard shows unrelated competitors at 0.1563 too. Our detector families were all selected against the mapped catalogue. The organiser confirmed on 2026-09-16 that known USGS/INGENIOUS fault pixels "are masked / excluded from evaluation, so they do not count towards penalty terms" — so reproducing the catalogue is worth nothing on the real metric. Re-scored on a leakage-free holdout, our historical files look strong (0.18–0.45) and still score 0.1563 in the contest, because they were fitted on the very traces being held out. That gap is the actual finding, and it is larger than any model variant we tested.</li>
+</ol>
+<p>Full re-scoring: <a href="historical/diagnosis.json">diagnosis.json</a>. File identity: <a href="evidence/submission_identity_audit_2026-09-27.json">the audit</a>.</p>
 </section>
+
+<section>
+<h2>What we learned that changes the target</h2>
+<div class="grid two">
+<article class="panel"><h3>“New fault” includes newly mapped geometry of an existing system</h3><p>"For the purposes of this competition, 'new fault' means 'any fault pixel not already captured by USGS/INGENIOUS and can include newly mapped geometry of an existing fault system." — chrisk-dd, DrivenData Staff, 2026-09-22. The unmapped continuation of a mapped fault is in scope, which is why hypothesis H4 exists. It did not win, and we say so.</p></article>
+<article class="panel"><h3>The organisers will not say what the labels are made of</h3><p>"We're not sharing details about the data sources, fault types, or coverage behind the test faults beyond what's in the problem description." — 2026-09-24. So any claim that this model or that one "uses what the experts used" is a guess. We do not make one.</p></article>
+</div>
+</section>
+
+<section class="source-strip"><h2>Official anchors</h2><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">Task, metric &amp; format ↗</a><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/data/">Data tab (login) ↗</a><a href="https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516">Known faults excluded ↗</a><a href="https://community.drivendata.org/t/where-do-you-draw-the-line/11536">What “new fault” means ↗</a><a href="SOURCES.html">Full source register →</a></section>
 </main>
-<footer><div class="wrap">Evidence first · 2026-09-27 review · <a href="index.html">Back to project status</a></div></footer>
+<footer><div class="wrap">Checked 2026-09-27 UTC. The downloadable file's SHA-256 is <code>6292a7916c83d371fc650b0f0c6a090702b9890eaa6e6546d50f104eea2fadc3</code>; if yours differs, you have a different file and should re-run the validator before uploading.</div></footer>
 </body></html>

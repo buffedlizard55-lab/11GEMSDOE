@@ -1,0 +1,536 @@
+{
+  "leakage_probe": {
+    "block_px": 512,
+    "fold0": {
+      "catalogue_reproduction_dti_on_heldout_faults": 0.0,
+      "score_px": 17637
+    },
+    "fold1": {
+      "catalogue_reproduction_dti_on_heldout_faults": 0.0,
+      "score_px": 15803
+    },
+    "fold2": {
+      "catalogue_reproduction_dti_on_heldout_faults": 0.0,
+      "score_px": 14147
+    },
+    "fold3": {
+      "catalogue_reproduction_dti_on_heldout_faults": 0.0,
+      "score_px": 13401
+    },
+    "mean_dti": 0.0
+  },
+  "limitations": [
+    "The trace holdout removes whole mapped traces; the contest's private faults were identified by experts as faults missing from the catalogue, which may be systematically more subtle than an average mapped trace.",
+    "Held-out traces are scored with the official mask applied, but the exact mask geometry used by the platform (catalogue pixels only, or a buffered corridor) is not published; only the statement that known faults are excluded is confirmed.",
+    "A win here is necessary, not sufficient, for a submission slot. The leaderboard is the only authority on the real target and it cannot be predicted from here."
+  ],
+  "metric": {
+    "alpha": 0.2,
+    "beta": 0.8,
+    "official_mask_source": "https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516",
+    "r_pixels": 3.0,
+    "source": "https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/"
+  },
+  "paired_verdict": {
+    "control": {
+      "delta_h1_block_dti_vs_first_arm": 0.0,
+      "delta_th_dti_vs_first_arm": 0.0,
+      "h1_reference_2026_09_27": {
+        "control": 0.149986,
+        "h1_strain_structure_tensor": 0.149795,
+        "source": "docs/evidence/h1_holdout_2026-09-27.json"
+      }
+    },
+    "structural": {
+      "delta_h1_block_dti_vs_first_arm": 0.0008110775133258405,
+      "delta_th_dti_vs_first_arm": 0.0008110775133258405,
+      "h1_reference_2026_09_27": {
+        "control": 0.149986,
+        "h1_strain_structure_tensor": 0.149795,
+        "source": "docs/evidence/h1_holdout_2026-09-27.json"
+      }
+    }
+  },
+  "results": {
+    "control": {
+      "config": {
+        "early_stopping": true,
+        "inpaint_fraction": 0.0,
+        "inpaint_repeats": 2,
+        "l2_regularization": 1.0,
+        "learning_rate": 0.08,
+        "max_iter": 150,
+        "max_leaf_nodes": 31,
+        "min_samples_leaf": 20,
+        "n_iter_no_change": 15,
+        "n_negatives": 250000,
+        "random_state": 42,
+        "validation_fraction": 0.1
+      },
+      "fit_seconds": 327.2,
+      "n_channels": 35,
+      "trace_holdout": {
+        "best_threshold": 0.1,
+        "best_threshold_dti": 0.13203155443724526,
+        "components_at_probability_folds": [
+          {
+            "DTI": 0.05258471373386369,
+            "FN_w": 16446.480830035573,
+            "FP_w": 41461.59978328328,
+            "TP_w": 1190.5191699644283,
+            "n_truth_pixels": 17637
+          },
+          {
+            "DTI": 0.04912707495035914,
+            "FN_w": 14635.443589317603,
+            "FP_w": 54450.682501083844,
+            "TP_w": 1167.5564106823974,
+            "n_truth_pixels": 15803
+          },
+          {
+            "DTI": 0.05537023102754945,
+            "FN_w": 12902.314748607285,
+            "FP_w": 54563.92464968253,
+            "TP_w": 1244.6852513927147,
+            "n_truth_pixels": 14147
+          },
+          {
+            "DTI": 0.042780551516681,
+            "FN_w": 12598.915365652674,
+            "FP_w": 39337.98900508424,
+            "TP_w": 802.0846343473258,
+            "n_truth_pixels": 13401
+          }
+        ],
+        "dti_at_preregistered_0_20": 0.10311873806331283,
+        "dti_at_probability": 0.04996564280711332,
+        "dti_at_probability_folds": [
+          0.05258471373386369,
+          0.04912707495035914,
+          0.05537023102754945,
+          0.042780551516681
+        ],
+        "h1_registered_block_dti": {
+          "folds": [
+            0.05258471373386369,
+            0.04912707495035914,
+            0.05537023102754945,
+            0.042780551516681
+          ],
+          "mean": 0.04996564280711332,
+          "note": "same protocol as the 2026-09-27 H1 record; no official mask"
+        },
+        "std": 0.0047010062554216445,
+        "sweep": {
+          "0.05": {
+            "dti": 0.11075902350870684,
+            "folds": [
+              0.1362085567499191,
+              0.10415901971805445,
+              0.10570940387215526,
+              0.09695911369469849
+            ]
+          },
+          "0.1": {
+            "dti": 0.13203155443724526,
+            "folds": [
+              0.16084398639994738,
+              0.12229086841191396,
+              0.13243234500186957,
+              0.11255901793525012
+            ]
+          },
+          "0.15": {
+            "dti": 0.12567063734259792,
+            "folds": [
+              0.13742758133118568,
+              0.11395584360907524,
+              0.1390901086941377,
+              0.11220901573599303
+            ]
+          },
+          "0.2": {
+            "dti": 0.10311873806331283,
+            "folds": [
+              0.09883924627755077,
+              0.09064906051954989,
+              0.12956341056257223,
+              0.09342323489357847
+            ]
+          },
+          "0.3": {
+            "dti": 0.049455861686367036,
+            "folds": [
+              0.04036620847628692,
+              0.04461207457677619,
+              0.06426554709245655,
+              0.04857961659994846
+            ]
+          },
+          "0.4": {
+            "dti": 0.017059045836910706,
+            "folds": [
+              0.010671914480300682,
+              0.020259562424914297,
+              0.019004146716627885,
+              0.018300559725799956
+            ]
+          },
+          "0.5": {
+            "dti": 0.004554779673036535,
+            "folds": [
+              0.001845561307223103,
+              0.00825490950791301,
+              0.003672072480034,
+              0.004446575396976023
+            ]
+          },
+          "0.6": {
+            "dti": 0.001185597383255261,
+            "folds": [
+              0.0,
+              0.0020732783018276753,
+              0.001528581934689074,
+              0.0011405292965042946
+            ]
+          },
+          "0.7": {
+            "dti": 9.176162293348453e-05,
+            "folds": [
+              0.0,
+              0.00033759436028344526,
+              2.945213145049286e-05,
+              0.0
+            ]
+          },
+          "0.8": {
+            "dti": 0.0,
+            "folds": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      }
+    },
+    "structural": {
+      "config": {
+        "early_stopping": true,
+        "inpaint_fraction": 0.0,
+        "inpaint_repeats": 2,
+        "l2_regularization": 1.0,
+        "learning_rate": 0.08,
+        "max_iter": 150,
+        "max_leaf_nodes": 31,
+        "min_samples_leaf": 20,
+        "n_iter_no_change": 15,
+        "n_negatives": 250000,
+        "random_state": 42,
+        "validation_fraction": 0.1
+      },
+      "fit_seconds": 358.2,
+      "n_channels": 44,
+      "trace_holdout": {
+        "best_threshold": 0.1,
+        "best_threshold_dti": 0.13344199800293766,
+        "components_at_probability_folds": [
+          {
+            "DTI": 0.05198441589082212,
+            "FN_w": 16463.979178329504,
+            "FP_w": 41103.255604641505,
+            "TP_w": 1173.0208216704946,
+            "n_truth_pixels": 17637
+          },
+          {
+            "DTI": 0.052763635232295825,
+            "FN_w": 14495.950230325105,
+            "FP_w": 59339.90762733111,
+            "TP_w": 1307.0497696748953,
+            "n_truth_pixels": 15803
+          },
+          {
+            "DTI": 0.054728626896267694,
+            "FN_w": 12905.352061500855,
+            "FP_w": 55607.14089662771,
+            "TP_w": 1241.6479384991455,
+            "n_truth_pixels": 14147
+          },
+          {
+            "DTI": 0.043630203262370985,
+            "FN_w": 12581.532317614201,
+            "FP_w": 39487.12877456324,
+            "TP_w": 819.4676823857997,
+            "n_truth_pixels": 13401
+          }
+        ],
+        "dti_at_preregistered_0_20": 0.10707021419647014,
+        "dti_at_probability": 0.05077672032043916,
+        "dti_at_probability_folds": [
+          0.05198441589082212,
+          0.052763635232295825,
+          0.054728626896267694,
+          0.043630203262370985
+        ],
+        "h1_registered_block_dti": {
+          "folds": [
+            0.05198441589082212,
+            0.052763635232295825,
+            0.054728626896267694,
+            0.043630203262370985
+          ],
+          "mean": 0.05077672032043916,
+          "note": "same protocol as the 2026-09-27 H1 record; no official mask"
+        },
+        "std": 0.004245486753689652,
+        "sweep": {
+          "0.05": {
+            "dti": 0.10865302134349479,
+            "folds": [
+              0.13597254027595593,
+              0.10060509551803512,
+              0.10292184352875032,
+              0.09511260605123777
+            ]
+          },
+          "0.1": {
+            "dti": 0.13344199800293766,
+            "folds": [
+              0.16162971434407788,
+              0.12934854262370502,
+              0.13136727214685506,
+              0.1114224628971126
+            ]
+          },
+          "0.15": {
+            "dti": 0.13052481708112706,
+            "folds": [
+              0.1362492475573947,
+              0.1308366164418845,
+              0.14580588997105828,
+              0.10920751435417074
+            ]
+          },
+          "0.2": {
+            "dti": 0.10707021419647014,
+            "folds": [
+              0.09295252078222517,
+              0.11111127031095708,
+              0.12680820924335004,
+              0.09740885644934824
+            ]
+          },
+          "0.3": {
+            "dti": 0.051348442334354115,
+            "folds": [
+              0.036711112566205524,
+              0.05825144814288572,
+              0.05723852096660182,
+              0.05319268766172339
+            ]
+          },
+          "0.4": {
+            "dti": 0.018032554788980578,
+            "folds": [
+              0.010796916089824088,
+              0.023753764791892885,
+              0.018319243316083925,
+              0.019260294958121413
+            ]
+          },
+          "0.5": {
+            "dti": 0.005496042165951675,
+            "folds": [
+              0.00043608239219084015,
+              0.009885270037653373,
+              0.003986628309729362,
+              0.007676187924233124
+            ]
+          },
+          "0.6": {
+            "dti": 0.001188702110609474,
+            "folds": [
+              0.0,
+              0.0020954699851316863,
+              0.0007668719886006421,
+              0.0018924664687055685
+            ]
+          },
+          "0.7": {
+            "dti": 0.00017297496079619694,
+            "folds": [
+              0.0,
+              0.00021689800343757418,
+              0.0,
+              0.0004750018397472136
+            ]
+          },
+          "0.8": {
+            "dti": 0.0,
+            "folds": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      }
+    }
+  },
+  "run": {
+    "arms": [
+      "control",
+      "structural"
+    ],
+    "block_folds": 4,
+    "block_px": 512,
+    "channels": {
+      "control": [
+        "mag_anom",
+        "rtp",
+        "tmi_hg",
+        "geod_2ndinv",
+        "iso_grav_anom_slope",
+        "tc",
+        "geod_shearrate",
+        "geod_dilaterate",
+        "tmi_vg",
+        "deq_n100a15",
+        "iso_grav_anom_vg",
+        "det_elev",
+        "iso_grav_anom",
+        "tmi",
+        "depth_to_base_surf",
+        "ieq_n100a15",
+        "cond_surf",
+        "iso_grav_anom_hg",
+        "det_elev_slope",
+        "topo_u8:slope_p90",
+        "topo_u8:slope_max",
+        "topo_u8:steep_frac",
+        "topo_u8:slope_std",
+        "topo_u8:relief_local",
+        "topo_u8:curv_prof_absmax",
+        "topo_u8:aspect_coherence",
+        "topo_u8:hs_lineament",
+        "topo_u8:dem_mean",
+        "radiometric_u8:rad_k",
+        "radiometric_u8:rad_th",
+        "radiometric_u8:rad_u",
+        "radiometric_u8:rad_tc",
+        "radiometric_u8:rad_thk",
+        "radiometric_u8:rad_uk",
+        "radiometric_u8:rad_uth"
+      ],
+      "structural": [
+        "mag_anom",
+        "rtp",
+        "tmi_hg",
+        "geod_2ndinv",
+        "iso_grav_anom_slope",
+        "tc",
+        "geod_shearrate",
+        "geod_dilaterate",
+        "tmi_vg",
+        "deq_n100a15",
+        "iso_grav_anom_vg",
+        "det_elev",
+        "iso_grav_anom",
+        "tmi",
+        "depth_to_base_surf",
+        "ieq_n100a15",
+        "cond_surf",
+        "iso_grav_anom_hg",
+        "det_elev_slope",
+        "topo_u8:slope_p90",
+        "topo_u8:slope_max",
+        "topo_u8:steep_frac",
+        "topo_u8:slope_std",
+        "topo_u8:relief_local",
+        "topo_u8:curv_prof_absmax",
+        "topo_u8:aspect_coherence",
+        "topo_u8:hs_lineament",
+        "topo_u8:dem_mean",
+        "radiometric_u8:rad_k",
+        "radiometric_u8:rad_th",
+        "radiometric_u8:rad_u",
+        "radiometric_u8:rad_tc",
+        "radiometric_u8:rad_thk",
+        "radiometric_u8:rad_uk",
+        "radiometric_u8:rad_uth",
+        "rtp_grad_coh_s3",
+        "rtp_grad_coh_s8",
+        "grav_grad_coh_s3",
+        "grav_grad_coh_s8",
+        "tmi_hg_coh_s3",
+        "dtb_lap_s3",
+        "dtb_grad_coh_s3",
+        "dtb_range5",
+        "cond_grad_coh_s3"
+      ]
+    },
+    "collar_px": 3,
+    "data_dir": "/home/user/11GEMSDOE/data",
+    "features_sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+    "holdout_fraction": 0.1,
+    "inpaint_fraction": 0.3,
+    "inpaint_repeats": 2,
+    "labels_sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+    "max_iter": 150,
+    "negatives": 250000,
+    "quick": false,
+    "seed": 0
+  },
+  "trace_holdout_splits": [
+    {
+      "block_km_at_100m": 51.2,
+      "block_px": 512,
+      "collar_px": 3,
+      "fold": 0,
+      "n_folds": 4,
+      "n_score_traces": 931,
+      "n_train_traces": 2324,
+      "score_px": 17637,
+      "score_region_px": 1257920,
+      "train_px": 42993
+    },
+    {
+      "block_km_at_100m": 51.2,
+      "block_px": 512,
+      "collar_px": 3,
+      "fold": 1,
+      "n_folds": 4,
+      "n_score_traces": 806,
+      "n_train_traces": 2462,
+      "score_px": 15803,
+      "score_region_px": 1250187,
+      "train_px": 44700
+    },
+    {
+      "block_km_at_100m": 51.2,
+      "block_px": 512,
+      "collar_px": 3,
+      "fold": 2,
+      "n_folds": 4,
+      "n_score_traces": 849,
+      "n_train_traces": 2418,
+      "score_px": 14147,
+      "score_region_px": 1230268,
+      "train_px": 46469
+    },
+    {
+      "block_km_at_100m": 51.2,
+      "block_px": 512,
+      "collar_px": 3,
+      "fold": 3,
+      "n_folds": 4,
+      "n_score_traces": 752,
+      "n_train_traces": 2481,
+      "score_px": 13401,
+      "score_region_px": 1428998,
+      "train_px": 47386
+    }
+  ]
+}

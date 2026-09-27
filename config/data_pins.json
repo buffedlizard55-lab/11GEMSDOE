@@ -1,0 +1,60 @@
+{
+  "_comment": [
+    "SHA-256 pins for the three competition rasters this project trains on.",
+    "canonical_name is the name used in the DrivenData data tab; bridge_name is the",
+    "name used by the public transport bridge (a team-published mirror of the same",
+    "bytes, pinned so a drift aborts the run instead of silently training on new data).",
+    "Provenance and the exact limitation of these pins are documented in docs/SOURCES.md (S4, S15).",
+    "primary_url values are the Dropbox mirrors linked from the official competition data tab",
+    "https://www.drivendata.org/competitions/306/competition-doe-gems/data/",
+    "Re-verify against the official portal whenever DrivenData credentials are available."
+  ],
+  "bridge_repo": "https://github.com/buffedlizard55-lab/5GEMSDOE.git",
+  "bridge_commit": "6e8d28ba407b5d748de5b3e94635c41d95e35354",
+  "bridge_manifest_url": "https://github.com/buffedlizard55-lab/5GEMSDOE/blob/6e8d28ba407b5d748de5b3e94635c41d95e35354/data/bridge/manifest.json",
+  "files": [
+    {
+      "canonical_name": "training_features.tif",
+      "bridge_name": "gems-geodawn-numerical-features.tif",
+      "part_prefix": "gems-geodawn-numerical-features.tif.part-",
+      "n_parts": 5,
+      "bytes": 418912844,
+      "sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+      "primary_url": "https://www.dropbox.com/scl/fi/3vz9o0wwavi26xaeoxlwr/gems-geodawn-numerical-features.tif?rlkey=je8d8fepqfbst9lnwsq9rkplu&dl=1"
+    },
+    {
+      "canonical_name": "labels.tif",
+      "bridge_name": "existing_faults.tif",
+      "n_parts": 1,
+      "bytes": 425830,
+      "sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+      "primary_url": "https://www.dropbox.com/scl/fi/t7fyt03qdh9egyme0itwo/existing_faults.tif?rlkey=yiao96uluqdkipf0h5vju71jf&dl=1"
+    },
+    {
+      "canonical_name": "sample_submission.tif",
+      "bridge_name": "example_submission.tif",
+      "n_parts": 1,
+      "bytes": 1599597,
+      "sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
+      "primary_url": "https://www.dropbox.com/scl/fi/6rgvnuady818ol8yqgis4/example_submission.tif?rlkey=kbykilvau066xuogoosbf4cq8&dl=1"
+    }
+  ],
+  "auxiliary": [
+    {
+      "canonical_name": "external/topo_u8.tif",
+      "bridge_path": "data/aux_bridge/topo/topo_u8.tif.part-000",
+      "bytes": 32523329,
+      "sha256": "a6398d9950965dec6aae6ccecdaa6ced48645d133eab222cbdd11def9bdabfa4",
+      "description": "9-band 10 m -> 100 m topographic feature stack built by the team from public USGS 3DEP data; used as an auxiliary channel only, never as the sole predictor.",
+      "primary_url": null
+    },
+    {
+      "canonical_name": "external/radiometric_u8.tif",
+      "bridge_path": "data/aux_bridge/radiometric/radiometric_u8.tif.part-000",
+      "bytes": 25475158,
+      "sha256": "6cb051f70f941fd78028fe66a9f71e87204fcd8d9a85903df0b94993bad1ec4d",
+      "description": "7-band airborne gamma radiometric ratio stack (K/Th/U and derivatives) resampled to the competition grid; the official 19-band feature raster carries no radiometrics.",
+      "primary_url": null
+    }
+  ]
+}

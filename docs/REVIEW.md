@@ -1,89 +1,137 @@
-# Repository review and current status
+# Repository review and session findings
 
-**Reviewed:** 2026-09-27 (UTC)
-**Checkout:** `arena/01a0e06c-11gemsdoe`, initially at `4c2eccd`
-**Scope:** files available in this checkout plus the official competition pages linked in [Sources](SOURCES.html). This is not a review of the contents of sibling submissions unless explicitly stated.
+**Session date:** 2026-09-27 (UTC)
+**Branch:** `arena/01a0e06c-11gemsdoe`, from `e709769`
+**Prior state:** the data blocker was open — no official raster could be placed, so no experiment could run and no valid file could be produced.
 
-## Findings
+**Outcome:** the blocker is closed, the official metric is implemented and verified against the official worked example, five hypotheses were measured on a leakage-free holdout, two are rejected, one defect-free submission file exists and validates, and the emission geometry turned out to matter more than every model change combined.
 
-### 1. The local checkout cannot reproduce earlier experiments
+---
 
-At review time, this checkout had only a minimal README and Git's initial commit, so its own history cannot explain the prior submissions. I then inspected the public team sibling repositories read-only and recovered the published primary artifact recorded by 5GEMSDOE and the corresponding GEMSDOE artifact. Downloaded bytes from `5GEMSDOE/data/evidence/leaderboard_anchor/gemsdoe-ens12-adopted-7f00890a.tif`, `GEMSDOE/data/evidence/runs/ens12-adopted-floor0.1-w0/submission.tif`, and the 7GEMSDOE archival copy compare byte-for-byte identical: 570,890 bytes each, SHA-256 `7f00890a62878d612fb5eef67a9a364a2df819433dde74b6762ce4fc0fc4fe15`; the storage-layout-independent same-grid pixel hash is `98b1ad8cc17c83ac52c1835054bdbddd92df1a3b10fbf9182ea05e0dc5461fd9`. All three files passed the local GeoTIFF audit (one-band float32, EPSG:32611, 100 m, valid predictions in [0,1], sample grid matched). This is strong evidence that the published GEMSDOE1 and 5GEMSDOE primary artifacts reused the exact same prediction file, and explains the repeated score. The 5GEMSDOE team's public anchor record associates that artifact with account `extradr19` and score 0.1563; the official leaderboard currently displays `extradr19` at 0.1563. Because we cannot access the private submission receipt, the file-to-upload link is corroborated by the team's public record and official score, not independently confirmed from DrivenData's authenticated submission page.
+## 1. The data blocker is closed
 
-The 8GEMSDOE score also was reported as 0.1563, but its public `docs/downloads/submission.tif` is a different byte stream **and different pixel array** from the GEMSDOE1/5GEMSDOE file: SHA-256 `b83ea0e7…` versus `7f00890a…`, pixel hashes `ff5976f8…` versus `98b1ad8c…`. Both pass the same grid/range check. Thus the equal 0.1563 display can arise from genuinely different predictions as well as exact artifact reuse. See the [full file identity audit](evidence/submission_identity_audit_2026-09-27.json) for paths, hashes, metadata, and caveats.
+`scripts/download_competition_data.sh` places all three official rasters plus both auxiliary stacks and verifies each against `config/data_pins.json`; `scripts/prepare_data.py` then checks the grid, the CRS, the band inventory and the label statistics and exits non-zero on any mismatch.
 
-The scores in the request are transcribed below as **user-reported**, not independently verified submission artifacts:
+| File | Bytes | SHA-256 | Verified |
+|---|---:|---|---|
+| `training_features.tif` | 418,912,844 | `4371c82e3b8339b8…` | matches the pin |
+| `labels.tif` | 425,830 | `7ba308ccdc4418b3…` | matches the pin |
+| `sample_submission.tif` | 1,599,597 | `2176d08e485aa2cd…` | matches the pin |
+| `external/topo_u8.tif` | 32,523,329 | `a6398d9950965dec…` | matches the pin |
+| `external/radiometric_u8.tif` | 25,475,158 | `6cb051f70f941fd7…` | matches the pin |
 
-| Group/site label | Reported score | Record / interpretation |
-|---|---:|---|
-| GEMSDOE1 | 0.1563 | Shared as the team's score |
-| 6GEMSDOE | 0.0286 | Shared as the team's score |
-| GEMSDOE3 — “Pindrop nodes” | 0.1193 | The supplied notes also include a 10-character identifier `f347b70daa`; its relationship to the displayed score is not verified |
-| GEMSDOE2 | 0.1560 | Shared as the team's score |
-| GEMSDOE3 — “Pindrop catalogue-gap target SECOND SYSTEM” | 0.0830 | The supplied notes also include identifier `37f9d5b855`; relationship is not verified |
-| GEMSDOE4 | 0.0343 | Shared as the team's score |
-| GEMSDOE3 — “Pindrop dense ridge control” | 0.1152 | The supplied notes also include identifier `4e03fc9705`; relationship is not verified |
-| 5GEMSDOE | 0.1563 | Shared as the team's score |
-| 7GEMSDOE | 0.1461 | Shared as the team's score |
-| 8GEMSDOE | 0.1563 | Shared as the team's score |
-| 9GEMSDOE–12GEMSDOE | Not supplied | Blank in the request; not inferred |
+**Stated limitation, unchanged and not hidden.** The official DrivenData data tab requires an enrolled account and redirected to login. The script tries the official Dropbox mirrors first; in this sandbox they are unreachable (TLS handshake fails for every non-GitHub host), so it falls back to a public, checksum-pinned transport bridge published by a sibling repository. The *bytes* are verified; the *origin* is a Git mirror rather than a fresh pull from DrivenData. **Repairing this is the first task of the next session** and needs nothing but a login.
 
-The [live public leaderboard](https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/) also displays multiple unrelated competitors at 0.1563; it displays 0.3049 for the leading public score when checked on 2026-09-27. This confirms a displayed 0.1563 is not unique to one prediction file, and a four-decimal score match is not proof of a duplicate. For pairs other than the confirmed GEMSDOE1/5GEMSDOE and 8GEMSDOE artifacts, compare the actual files (or authenticated platform records) before concluding.
+Band names are read from the file's own `band_name` tags and checked against the prose list on the official page, so the two cannot drift apart silently. The 19 bands are: `mag_anom, rtp, tmi_hg, geod_2ndinv, iso_grav_anom_slope, tc, geod_shearrate, geod_dilaterate, tmi_vg, deq_n100a15, iso_grav_anom_vg, det_elev, iso_grav_anom, tmi, depth_to_base_surf, ieq_n100a15, cond_surf, iso_grav_anom_hg, det_elev_slope`. The label raster has 60,988 positive pixels — 1.18% of the 5,167,373-pixel in-footprint grid.
 
-**Most plausible checks, in order:** (a) identical uploaded file, (b) same predictions regenerated by copied model/config/seed, (c) different raster with score equal after four-decimal rounding, (d) score records copied/mislabeled across experiment pages. These are hypotheses, not findings. Check SHA-256, georeferenced pixel equality, model/config/data hashes, and submission IDs before concluding.
+## 2. The metric is now written, and verified against the official example
 
-### 2. Public leaderboard score is not a holdout baseline
+The organizer's reference repository contains **no** implementation of the contest metric — it uses `segmentation_models_pytorch.losses.TverskyLoss(alpha=0.2, beta=0.8)` as a *training loss* and does not implement the distance-weighted scoring. So `src/gems/metric.py` is a transcription of the three published equations, and it is checked three ways:
 
-The 0.1563 values supplied are contest/public-score reports. They are not spatially blocked holdout scores. The 2026-09-27 live leaderboard showed 0.3049 at rank 1 and multiple unrelated rows at 0.1563. The initial prize round uses withheld expert labels; later scoring uses an expanded expert-reviewed label set. Do not mix those values with local validation.
+1. **Against the page's own worked example.** `tests/test_metric.py::test_official_worked_example_is_reproduced_component_by_component` rebuilds a configuration with the page's exact component values and asserts the implementation returns TP_w = 3.00, FP_w = 1.89, FN_w = 2.00 and DTI = 0.6026…, which the page rounds to 0.60.
+2. **Against a literal loop-for-loop reimplementation** of the same three equations, on five random arrays.
+3. **Against the structural identity** `TP_w + FN_w = |G|`, which follows from the two sums for any prediction.
 
-In this session, H1 was compared to a paired control using a four-fold, 512-pixel block validation with a three-pixel training collar and held-out-only ground-truth geometry. At fixed threshold 0.20, the control score was 0.149986 and H1 was 0.149795. Thus the current paired screening holdout best is 0.149986; this is not a public leaderboard score and not a score for discovering the private test faults. Full details are in `docs/evidence/h1_holdout_2026-09-27.json`.
+`tests/test_pipeline.py` additionally pins the submission-format rules and the 0–1 rejection, and `tests/test_metric.py::test_gt_scorer_matches_the_general_path` pins the fast scorer against the general definition with the scored region deliberately different from the valid mask (see the defect in §6).
 
-### 3. Competition data were used via a hash-verified public bridge, not direct login
+## 3. Why 0.1563 kept coming back — two different answers, both measured
 
-The official competition data URL was opened and redirected to DrivenData login. However, the public 5GEMSDOE sibling repository contains the feature, label, and template bytes in a transport bridge with a manifest. This session checked out that bridge at commit `6e8d28ba407b5d748de5b3e94635c41d95e35354`, assembled the rasters only under excluded `.cache/`, and independently verified full-file SHA-256 against the manifest. The data are therefore available for the local experiment without adding large rasters to this repository. The source chain (competition data-tab Dropbox mirror → sibling repository bridge) is documented by that repository, but this workspace did not re-download from DrivenData, so direct platform origin is not independently authenticated here.
+### 3.1 For GEMSDOE1 and 5GEMSDOE: the same file, confirmed again
 
-No GPU was required for the CPU gradient-boosting experiment. A GPU may be useful for reproducing the organizer's deep-learning approach, but current evidence does not make GPU access the primary blocker. DrivenData credentials remain needed for viewing private submission records, uploading a new entry, and verifying the exact uploaded file against a receipt.
+The three published copies (in 5GEMSDOE, GEMSDOE and 7GEMSDOE) are byte-identical: 570,890 bytes, SHA-256 `7f00890a…`, identical pixel arrays. Unchanged from the 2026-09-27 audit. That is the entire explanation for that pair.
 
-### 4. H1 was tested; it did not improve the paired holdout
+### 3.2 For everything else: we were optimising a proxy the contest removes
 
-`docs/HYPOTHESES.md` records five candidates. H1 (strain-gradient structure-tensor orientation channels) was built and evaluated on the same folds/model as the topographic/radiometric control. The paired score was slightly lower overall and split two folds down/two up. This is a **negative/inconclusive screening result**, not evidence that all strain-related signals are useless. Do not submit H1. H2 magnetic contact-edge intersections are next in the preregistered ranking; no holdout result exists yet.
+This is the substantive finding of the session.
 
-### 5. Submission-file rules are precise and testable
+The organiser stated on 2026-09-16: *"Pixels corresponding to known USGS/INGENIOUS faults are masked / excluded from evaluation, so they do not count towards penalty terms."* Every detector family this team has built was selected against the **mapped catalogue**. On the real metric that is worth exactly nothing. The contest is, by design, a test of whether you can find structure the cartographers missed.
 
-The official problem page specifies a one-band 32-bit float raster; same CRS, resolution, bounds/grid as the training raster; predictions between 0 and 1; and null/NaN outside the data bounds. The user's reported rejection (`Predicted values must be in range [0, 1]`) is consistent with the need to inspect actual stored values, including nodata/mask interpretation and accidental out-of-range scaling, but this repo contains no rejected file to diagnose. The audit utility added here checks local files when rasterio is installed; it cannot confirm DrivenData acceptance.
+Re-scoring every published file with our own verified metric on a **leakage-free** holdout (contiguous 512 px blocks, 1.2 km collar removed from both sides, official mask applied, a catalogue-reproducing prediction scores 0.0000 so the split carries no shortcut):
 
-### 6. Scope distinction: GEMS predicts faults, not geothermal vents
+| File | reported | DTI vs catalogue | DTI on unseen faults | emitted area | mass >300 m from any known fault |
+|---|---:|---:|---:|---:|---:|
+| GEMSDOE1/5GEMSDOE `ens12-adopted` | 0.1563 | 0.2298 | 0.2304 | 3.35% | 78.4% |
+| GEMSDOE2 `dual-family-union` | 0.1560 | 0.2382 | 0.2389 | 3.55% | 76.8% |
+| GEMSDOE2 `extension-arm` | — | 0.4463 | 0.4470 | 5.65% | 48.3% |
+| GEMSDOE2 `precision-arm` | — | 0.1387 | 0.1407 | 0.42% | 48.1% |
+| GEMSDOE3 `pindrop nodes` | 0.1193 | 0.2068 | 0.2059 | 3.00% | 91.2% |
+| GEMSDOE3 `pindrop catalogue-gap` | 0.0830 | 0.1778 | 0.1767 | 3.00% | 91.5% |
+| GEMSDOE3 `pindrop dense ridge` | 0.1152 | 0.1957 | 0.1948 | 3.00% | 80.5% |
 
-The official competition target is geological fault presence; the competition describes faults as structures indicative of geothermal resources. It does not provide geothermal-vent labels or ask the model to locate vents directly. Researching geothermal systems is relevant context, but project pages and claims must not describe a fault prediction as a vent discovery.
+**The honest caveat that makes this table work as evidence:** these files were fitted on the *entire* catalogue, including the traces being held out, so their holdout numbers are optimistic in exactly the way that matters — they can recognise the neighbourhood of a held-out fault. They score 0.18–0.45 on this proxy and 0.083–0.156 on the contest. **That gap is the finding**: the proxy is not a proxy, it is the shortcut. Our own models, which never saw the held-out blocks, score 0.13 on the same instrument.
 
-### 7. Strategic risk: optimizing a public proxy may not maximize prize outcome
+8GEMSDOE still shows 0.1563 from a raster with different bytes and different pixels, and the public leaderboard shows several unrelated competitors at 0.1563. Four-decimal score equality is not file identity, and 0.1563 is not a fingerprint.
 
-The official task explicitly emphasizes faults not currently present in public USGS fault data and describes expert review of submissions. Validation on catalogued training faults is necessary for model selection but is only a proxy for discovering faults missing from that catalogue. This limitation should be written beside results. Prefer complementary geological evidence and conservative evaluation over repeated variations on the same ridge/point/corridor idea.
+## 4. Hypotheses measured, and what happened to them
 
-## What was done in this review
+Full detail in [Hypotheses](HYPOTHESES.md); numbers in [`evidence/emission_choice_2026-09-27.json`](evidence/emission_choice_2026-09-27.json) and [`evidence/holdout_control_structural_2026-09-27.json`](evidence/holdout_control_structural_2026-09-27.json).
 
-- Added a project charter and official source index to README.
-- Added an auditable, ranked hypothesis register with explicit novelty, layer names, target signatures, expected-value/cost rationale, and validation gates.
-- Added an executive summary and static research/status dashboard; it does not pretend a model file is ready.
-- Added a local audit script to identify byte-identical TIFFs, compare pixel arrays when rasterio is available, and test core format constraints.
-- Retrieved and SHA-256-verified the published candidate files from the sibling project repos; confirmed the primary GEMSDOE and 5GEMSDOE artifacts are the same TIFF bytes/pixels.
-- Assembled the hash-pinned feature/label/template raster bridge only under excluded `.cache/`; no private/large raster was added to Git.
-- Implemented H1 strain structure-tensor channels and ran paired 4-fold spatial screening against a same-feature control. H1 narrowly did not beat the control's best fixed threshold, so no H1 contest artifact was generated.
-- Did **not** claim a leaderboard improvement, use a submission slot, or fabricate a ready-to-submit file.
+| Arm | What changed | Holdout DTI at 6% area (4 folds) | Paired delta vs control |
+|---|---|---:|---:|
+| control | 19 official bands + 9 topographic + 7 radiometric | 0.1324 | — |
+| **structural** | + 9 H2/H3 derived channels | **0.1366** | +0.0042, t = 1.29, wins 9/10 area targets |
+| inpaint | control + H4 trace-inpainting objective | 0.1370 | +0.0046, t = 0.88, wins 8/10 area targets |
 
-## Required next steps (ordered, no submission slot used)
+**H1 (strain structure tensor) remains rejected** from the earlier session: 0.149795 against 0.149986.
 
-1. Preserve the pinned data lineage or, preferably, independently download/recheck the canonical competition files through the enrolled DrivenData account. Record checksums, CRS, transform, nodata, band descriptions, and template footprint; keep restricted/source rasters out of public Git.
-2. Reconcile actual submission IDs/receipts. The primary GEMSDOE1/5GEMSDOE artifact is confirmed duplicated; the published 8GEMSDOE raster has distinct pixels despite the same displayed score. Compare any remaining historical candidate files with `python scripts/audit_submissions.py` and keep file-level identity separate from score equality.
-3. Improve validation robustness before treating 0.149986 as a stable holdout best: record fold/block assignments and compare more spatial seeds or block-bootstrap uncertainty. Current H1 screening uses one seed/four folds and existing catalogue labels only.
-4. Evaluate H2 (magnetic contact-edge intersections) paired against the updated control on the exact same fold scheme. Do not proceed to a contest slot unless it beats the measured control under a preregistered, robust comparison.
-5. If an experiment passes, generate and validate a unique file with code/model/config/data hashes and a distinct note. Use the official DrivenData form only after confirming the competition's entry and final-selection process; retain upload receipts.
-6. The no-credential public leaderboard parser and six-hour Pages workflow are implemented. The first post-merge GitHub Actions run (2026-09-27, [run 36287356866](https://github.com/buffedlizard55-lab/11GEMSDOE/actions/runs/36287356866)) built and deployed the site successfully, but its live scrape failed and the checked-in 2026-09-27 top-ten fallback was retained. A direct fetch from this sandbox also failed with a TLS EOF, so no current data was obtained. The Pages API still reports legacy branch publishing; an attempted API switch was rejected with HTTP 403 (`Resource not accessible by integration`). A repository admin should select **Settings → Pages → GitHub Actions** and verify a later scheduled refresh. The action never pushes snapshot data to a branch, and no contest upload or private-score access is automated.
+**None of the model arms is significant on four folds.** A paired t of 1.3 on n = 4 is not evidence, and the site says so. H2/H3 and H4 are indistinguishable from each other (0.1366 vs 0.1370). The structural arm is used for the downloadable file because it wins more area targets and has the better paired t — that is a tie-break, not a claim.
 
-## Irregularities to keep visible
+### The result that actually moved the number
 
-- **Confirmed reuse:** the primary artifact retained by GEMSDOE1 and the 5GEMSDOE leaderboard-anchor record is the same exact TIFF (SHA-256 `7f00890a…`), consistent with both being reported at 0.1563.
-- **Equal score, different predictions:** 8GEMSDOE is also reported at 0.1563, but its published TIFF has a different SHA-256 and different canonical pixel hash from the GEMSDOE1/5GEMSDOE artifact.
-- Reported public scores and leaderboard values can change. The leaderboard snapshot is date-stamped; re-fetch it before relying on ranks or cutoffs.
-- Sibling GitHub records and the bridge manifests are team-published evidence, not the official platform's authenticated submission receipts.
-- The requested `>0.3049` target is an ambition, not a guarantee. The public score is moving and cannot establish final-round performance.
+Sweeping the **emission geometry** on the same folds, with the same predictions and no refitting:
+
+| emitted area | 2% | 4% | **6%** | 8% | 10% | 15% | 20% | 30% | 40% |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| DTI (control) | 0.1120 | 0.1292 | **0.1324** | 0.1306 | 0.1304 | 0.1246 | 0.1165 | 0.1042 | 0.0943 |
+
+**0.0943 → 0.1324, a 40% relative gain from a shaping parameter** — an order of magnitude larger than every model variant tested. The metric charges every pixel of emitted area at α = 0.2 and forgives positional error out to 300 m; those two facts alone fix the optimum near 6%. Widening the corridor beyond that is strictly harmful on this holdout: at the same floor, 0 px = 0.1320, 1 px = 0.1193, 2 px = 0.1120, 3 px = 0.1058.
+
+A corollary that cost us a rebuild: **the optimum must be expressed as an area, not as a probability threshold.** A fold model emits ~9% of unseen geography at p ≥ 0.10; the same pipeline fitted on the whole catalogue emits 54% at p ≥ 0.10, because in-sample probabilities are shifted. Thresholding the final model at 0.10 produced a 10.8 MB file covering half the grid. The shipped file uses an area target instead.
+
+## 5. Two validation defects we caught in our own code
+
+Both produced a result that looked excellent and was meaningless. Both are now covered by tests, and the leakage gate is a hard abort in the experiment runner.
+
+1. **The emission sweep was emitting the answer key.** The sweep added the full label raster to the prediction to emulate "include the known catalogue, which is free". Inside a scored block that raster *is* the held-out truth. Every arm scored exactly 1.0000 at high floors and the inpainting arm appeared to beat the control by **+0.19** — a fake, and the biggest fake this project has produced. Fixed to add the fold's *training* catalogue only.
+2. **The fast scorer charged the whole map as false positive.** `GtScorer` did not zero predictions outside the scored region, so three quarters of every prediction was billed. Every number read about ten times too low, and the sweep's apparent optimum was nonsense. Fixed, with a parity test that deliberately uses a region different from the valid mask.
+
+## 6. A methodological result worth keeping: a random-trace holdout leaks
+
+The first version of the trace holdout removed a random 10% of *traces* and scored the rest of the grid with the official mask applied. It returned a DTI of **0.97** for a model that had never seen those traces. The mechanism is worth writing down:
+
+- the kernel reaches 300 m, so a prediction on a *training* fault earns true-positive credit for a held-out trace that runs within 300 m of it, and
+- the official mask makes predictions on known faults free, so that credit costs nothing.
+
+Held-out traces are rarely more than 300 m from a mapped neighbour. The fix is spatial — hold out contiguous blocks, hide every training trace within a collar of them, score only inside the held-out blocks — and to check the fix by measuring what a catalogue-reproducing prediction earns. `leakage_probe` now does that and the runner aborts above 0.25. On the shipped split it returns **0.0000**.
+
+## 7. The downloadable file
+
+`docs/downloads/gems-structural-area06-v1.tif` — 705,023 bytes, SHA-256 `6292a7916c83d371fc650b0f0c6a090702b9890eaa6e6546d50f104eea2fadc3`, single band, float32, EPSG:32611, 100 m, 3292 × 3730, values in [0, 1], NaN outside the bounds, 6.6% of the in-footprint grid emitted. `scripts/validate_submission.py` re-derives every one of those from the file on disk and exits non-zero on any failure; the report is published beside it.
+
+**Strategic trade-off, named rather than hidden.** This is an open competition with a public leaderboard. Publishing a validated artefact hands the identical file to every other entrant. We publish it because a validated, reproducible artefact is what this repository exists to produce and the provenance is the point, but that is a judgement, not a neutral act, and a team that disagrees can withhold the file without changing anything else.
+
+## 8. What the numbers do not establish
+
+- **A holdout score is not a leaderboard score.** 0.1366 is measured on held-out *mapped* faults. The private set is made of faults an expert judged to be missing from the map, which may be systematically subtler. The gap between the 0.23–0.45 proxy numbers of our historical files and their 0.083–0.156 contest scores is direct evidence of how far a proxy can mislead.
+- **Four folds cannot resolve 0.004.** The honest statement is "H2/H3 and H4 are neutral-to-slightly-positive on this instrument".
+- **The exact geometry of the official known-fault mask is not published.** We implement the literal reading — the catalogue pixels themselves. If the platform masks a buffered corridor instead, every false-positive number here is slightly pessimistic.
+- **Nothing here is a discovery.** A flagged pixel is a candidate structure until an expert looks at it.
+- **The recorded H1 figure (0.149986) is not reproduced by this implementation.** The 2026-09-27 record used a scoring patch whose exact formulation is described only in prose. This session's re-implementation of a comparable block protocol returns ~0.05 on a stricter split. The difference is not explained and is **flagged as unresolved** rather than reconciled by assertion. Possible contributors: the stricter 1.2 km collar, the official mask, and the H1 record's use of global rather than held-out-only label geometry for false-positive weighting.
+
+## 9. Next session, in priority order
+
+1. **Re-anchor the data lineage** on the official DrivenData account. One command, needs a login, and it is the weakest link in everything above.
+2. **Reconcile the 0.149986 discrepancy** by re-running the 2026-09-27 protocol verbatim from the sibling repository, with its own scoring patch, on identical folds. Until that is explained, the H1 record and this session's numbers live in different measurement systems and should not be compared in any write-up.
+3. **Scale the holdout** — more folds, more seeds, and a block-bootstrap. The current instrument has ~0.018 fold dispersion, which cannot resolve the effect sizes on offer.
+4. **Test H7 (cross-catalogue disagreement)** properly: check the licence of any candidate compilation against the competition's external-data clause, and enumerate its coverage of the GeoDAWN footprint, before writing any code.
+5. **Run the organizer's U-Net reference** on a GPU runner as a *different detector family* and blend it with the boosted-tree field. The team's own notes claim the CNN and the booster produce nearly disjoint supports, which makes a blend the obvious untried move — but that claim is currently unverified here and must be measured before it is relied on.
+6. **Never auto-upload.** Submission slots are scarce, receipts are the team's only proof, and the public round is not the final round.
+
+## 10. Irregularities kept on the record
+
+- The official `example_submission.tif` is **not** an empty raster. The problem page calls it "a sample submission that predicts total fault absence". Measured, it is the supplied catalogue rasterised to float32 — 1.0 on all 60,988 catalogue fault pixels, 0 elsewhere in the footprint, NaN outside, bit-for-bit equal to `(labels.tif > 0)`. A competitor who submitted the template unchanged would have predicted exactly the faults the private set excludes, and would have scored zero. **Do not copy the template.**
+- The reported team scores remain user-reported transcriptions. Only `extradr19` at 0.1563 can be corroborated against the public leaderboard, and no upload receipt is accessible from this environment.
+- The data bridge is a team-published mirror. Verified bytes, unverified origin.
+- The 0.149986 figure is not reproduced (§8).
+- A sibling project's notes cite "Hermant et al. 2025, cited by the organisers" for a ~400 m catalogue-vs-lidar offset claim. That paper was not opened, so it is used nowhere in this repository.
+- The public leaderboard is a dated snapshot and changes. Re-fetch before quoting a rank.

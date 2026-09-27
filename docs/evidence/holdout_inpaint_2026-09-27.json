@@ -1,0 +1,326 @@
+{
+  "leakage_probe": {
+    "block_px": 512,
+    "fold0": {
+      "catalogue_reproduction_dti_on_heldout_faults": 0.0,
+      "score_px": 17637
+    },
+    "fold1": {
+      "catalogue_reproduction_dti_on_heldout_faults": 0.0,
+      "score_px": 15803
+    },
+    "fold2": {
+      "catalogue_reproduction_dti_on_heldout_faults": 0.0,
+      "score_px": 14147
+    },
+    "fold3": {
+      "catalogue_reproduction_dti_on_heldout_faults": 0.0,
+      "score_px": 13401
+    },
+    "mean_dti": 0.0
+  },
+  "limitations": [
+    "The trace holdout removes whole mapped traces; the contest's private faults were identified by experts as faults missing from the catalogue, which may be systematically more subtle than an average mapped trace.",
+    "Held-out traces are scored with the official mask applied, but the exact mask geometry used by the platform (catalogue pixels only, or a buffered corridor) is not published; only the statement that known faults are excluded is confirmed.",
+    "A win here is necessary, not sufficient, for a submission slot. The leaderboard is the only authority on the real target and it cannot be predicted from here."
+  ],
+  "metric": {
+    "alpha": 0.2,
+    "beta": 0.8,
+    "official_mask_source": "https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516",
+    "r_pixels": 3.0,
+    "source": "https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/"
+  },
+  "paired_verdict": {
+    "inpaint": {
+      "delta_h1_block_dti_vs_first_arm": 0.0,
+      "delta_th_dti_vs_first_arm": 0.0,
+      "h1_reference_2026_09_27": {
+        "control": 0.149986,
+        "h1_strain_structure_tensor": 0.149795,
+        "source": "docs/evidence/h1_holdout_2026-09-27.json"
+      }
+    }
+  },
+  "results": {
+    "inpaint": {
+      "config": {
+        "early_stopping": true,
+        "inpaint_fraction": 0.3,
+        "inpaint_repeats": 2,
+        "l2_regularization": 1.0,
+        "learning_rate": 0.08,
+        "max_iter": 150,
+        "max_leaf_nodes": 31,
+        "min_samples_leaf": 20,
+        "n_iter_no_change": 15,
+        "n_negatives": 250000,
+        "random_state": 42,
+        "validation_fraction": 0.1
+      },
+      "fit_seconds": 343.3,
+      "n_channels": 44,
+      "trace_holdout": {
+        "best_threshold": 0.1,
+        "best_threshold_dti": 0.13420176845066903,
+        "components_at_probability_folds": [
+          {
+            "DTI": 0.04327975679016274,
+            "FN_w": 16759.579355662314,
+            "FP_w": 29940.750217878165,
+            "TP_w": 877.4206443376845,
+            "n_truth_pixels": 17637
+          },
+          {
+            "DTI": 0.046338238215819144,
+            "FN_w": 14795.861118793971,
+            "FP_w": 44453.408887083184,
+            "TP_w": 1007.138881206028,
+            "n_truth_pixels": 15803
+          },
+          {
+            "DTI": 0.047041073420673825,
+            "FN_w": 13215.063458223982,
+            "FP_w": 41535.68379210681,
+            "TP_w": 931.9365417760188,
+            "n_truth_pixels": 14147
+          },
+          {
+            "DTI": 0.03752353489258704,
+            "FN_w": 12765.243430234683,
+            "FP_w": 30474.61956529887,
+            "TP_w": 635.7565697653173,
+            "n_truth_pixels": 13401
+          }
+        ],
+        "dti_at_preregistered_0_20": 0.07102121878842489,
+        "dti_at_probability": 0.043545650829810684,
+        "dti_at_probability_folds": [
+          0.04327975679016274,
+          0.046338238215819144,
+          0.047041073420673825,
+          0.03752353489258704
+        ],
+        "h1_registered_block_dti": {
+          "folds": [
+            0.04327975679016274,
+            0.046338238215819144,
+            0.047041073420673825,
+            0.03752353489258704
+          ],
+          "mean": 0.043545650829810684,
+          "note": "same protocol as the 2026-09-27 H1 record; no official mask"
+        },
+        "std": 0.0037534352065439077,
+        "sweep": {
+          "0.05": {
+            "dti": 0.12122619324847156,
+            "folds": [
+              0.14731962913202343,
+              0.11393501949426225,
+              0.1165998904735988,
+              0.10705023389400173
+            ]
+          },
+          "0.1": {
+            "dti": 0.13420176845066903,
+            "folds": [
+              0.14197093685038348,
+              0.14068777594657816,
+              0.1398690279454599,
+              0.11427933306025456
+            ]
+          },
+          "0.15": {
+            "dti": 0.10840868322270433,
+            "folds": [
+              0.09799739553654954,
+              0.11123714814292748,
+              0.12746719935889017,
+              0.09693298985245012
+            ]
+          },
+          "0.2": {
+            "dti": 0.07102121878842489,
+            "folds": [
+              0.05626892722003627,
+              0.0753003109036655,
+              0.08218815600560643,
+              0.07032748102439133
+            ]
+          },
+          "0.3": {
+            "dti": 0.023026884966489216,
+            "folds": [
+              0.018914740648035645,
+              0.029983853613377423,
+              0.018796194849868598,
+              0.024412750754675194
+            ]
+          },
+          "0.4": {
+            "dti": 0.007441203026852896,
+            "folds": [
+              0.0046704389743177305,
+              0.010625585918812668,
+              0.0037671119535679495,
+              0.010701675260713236
+            ]
+          },
+          "0.5": {
+            "dti": 0.002831921591607128,
+            "folds": [
+              0.0007763200954799651,
+              0.0032508676087804177,
+              0.0013313297600609291,
+              0.005969168902107201
+            ]
+          },
+          "0.6": {
+            "dti": 0.0008021163660630365,
+            "folds": [
+              0.0,
+              0.0009151297296021428,
+              0.0,
+              0.0022933357346500032
+            ]
+          },
+          "0.7": {
+            "dti": 0.00029478677193866306,
+            "folds": [
+              0.0,
+              0.0,
+              0.0,
+              0.0011791470877546523
+            ]
+          },
+          "0.8": {
+            "dti": 0.0,
+            "folds": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      }
+    }
+  },
+  "run": {
+    "arms": [
+      "inpaint"
+    ],
+    "block_folds": 4,
+    "block_px": 512,
+    "channels": {
+      "inpaint": [
+        "mag_anom",
+        "rtp",
+        "tmi_hg",
+        "geod_2ndinv",
+        "iso_grav_anom_slope",
+        "tc",
+        "geod_shearrate",
+        "geod_dilaterate",
+        "tmi_vg",
+        "deq_n100a15",
+        "iso_grav_anom_vg",
+        "det_elev",
+        "iso_grav_anom",
+        "tmi",
+        "depth_to_base_surf",
+        "ieq_n100a15",
+        "cond_surf",
+        "iso_grav_anom_hg",
+        "det_elev_slope",
+        "topo_u8:slope_p90",
+        "topo_u8:slope_max",
+        "topo_u8:steep_frac",
+        "topo_u8:slope_std",
+        "topo_u8:relief_local",
+        "topo_u8:curv_prof_absmax",
+        "topo_u8:aspect_coherence",
+        "topo_u8:hs_lineament",
+        "topo_u8:dem_mean",
+        "radiometric_u8:rad_k",
+        "radiometric_u8:rad_th",
+        "radiometric_u8:rad_u",
+        "radiometric_u8:rad_tc",
+        "radiometric_u8:rad_thk",
+        "radiometric_u8:rad_uk",
+        "radiometric_u8:rad_uth",
+        "rtp_grad_coh_s3",
+        "rtp_grad_coh_s8",
+        "grav_grad_coh_s3",
+        "grav_grad_coh_s8",
+        "tmi_hg_coh_s3",
+        "dtb_lap_s3",
+        "dtb_grad_coh_s3",
+        "dtb_range5",
+        "cond_grad_coh_s3"
+      ]
+    },
+    "collar_px": 3,
+    "data_dir": "/home/user/11GEMSDOE/data",
+    "features_sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+    "holdout_fraction": 0.1,
+    "inpaint_fraction": 0.3,
+    "inpaint_repeats": 2,
+    "labels_sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+    "max_iter": 150,
+    "negatives": 250000,
+    "quick": false,
+    "seed": 0
+  },
+  "trace_holdout_splits": [
+    {
+      "block_km_at_100m": 51.2,
+      "block_px": 512,
+      "collar_px": 3,
+      "fold": 0,
+      "n_folds": 4,
+      "n_score_traces": 931,
+      "n_train_traces": 2324,
+      "score_px": 17637,
+      "score_region_px": 1257920,
+      "train_px": 42993
+    },
+    {
+      "block_km_at_100m": 51.2,
+      "block_px": 512,
+      "collar_px": 3,
+      "fold": 1,
+      "n_folds": 4,
+      "n_score_traces": 806,
+      "n_train_traces": 2462,
+      "score_px": 15803,
+      "score_region_px": 1250187,
+      "train_px": 44700
+    },
+    {
+      "block_km_at_100m": 51.2,
+      "block_px": 512,
+      "collar_px": 3,
+      "fold": 2,
+      "n_folds": 4,
+      "n_score_traces": 849,
+      "n_train_traces": 2418,
+      "score_px": 14147,
+      "score_region_px": 1230268,
+      "train_px": 46469
+    },
+    {
+      "block_km_at_100m": 51.2,
+      "block_px": 512,
+      "collar_px": 3,
+      "fold": 3,
+      "n_folds": 4,
+      "n_score_traces": 752,
+      "n_train_traces": 2481,
+      "score_px": 13401,
+      "score_region_px": 1428998,
+      "train_px": 47386
+    }
+  ]
+}

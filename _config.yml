@@ -1,0 +1,36 @@
+# Jekyll configuration for the 11GEMSDOE research site.
+#
+# The Pages workflow (https://github.com/buffedlizard55-lab/11GEMSDOE/actions/workflows/pages.yml)
+# builds with source: ./, so the published site keeps the repository's own paths:
+# the dashboard is at /docs/index.html, which is the URL the team has always used.
+#
+# The only thing configured here is what must NOT be published. Competition data is
+# git-ignored and therefore absent from a checkout anyway, but the exclusion list
+# makes that explicit and protects against a future large file being committed.
+
+title: 11GEMSDOE
+description: >-
+  Evidence-led research pipeline for the U.S. Department of Energy GEMS Prize
+  Challenge: verified sources, reproducible experiments, and a validated
+  fault-prediction GeoTIFF.
+
+# NOTE: do not add "*.tif" here. Jekyll's exclude matches at every level, and
+# docs/downloads/*.tif IS the submission artefact the download button points at.
+# Excluding it silently published a dead download link on 2026-09-27 until it was
+# caught. Large binaries are kept out by .gitignore, not by this list.
+exclude:
+  - data/
+  - outputs/
+  - artifacts/
+  - .venv/
+  - .cache/
+  - .pytest_cache/
+  - .ruff_cache/
+  - __pycache__/
+  - node_modules/
+  - requirements-experiment.txt
+
+# Keep Markdown pages under docs/ readable and navigable.
+markdown: kramdown
+kramdown:
+  input: GFM
