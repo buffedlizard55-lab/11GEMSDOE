@@ -11,3 +11,6 @@ __pycache__/
 /outputs/
 /artifacts/
 *.aux.xml
+
+# Compiled caches from the research package
+src/**/__pycache__/

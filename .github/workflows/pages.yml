@@ -26,6 +26,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Install the research package and run its tests
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+          python -m pytest -q
       - name: Refresh public leaderboard snapshot
         run: |
           if ! python scripts/fetch_leaderboard.py --output docs/leaderboard.json; then
@@ -33,6 +38,18 @@ jobs:
           fi
       - name: Configure Pages
         uses: actions/configure-pages@v5
+      - name: Guard against publishing an invalid submission file
+        run: |
+          # The download button on the site must never point at a file that would
+          # be rejected with "Predicted values must be in range [0, 1]". When the
+          # validated artefact is present, re-check it from disk; the template is
+          # fetched by scripts/download_competition_data.sh and is not in the repo,
+          # so this step runs only if both are available.
+          if [ -f docs/downloads/gems-structural-area06-v1.tif ] && [ -f data/sample_submission.tif ]; then
+            python scripts/validate_submission.py docs/downloads/gems-structural-area06-v1.tif
+          else
+            echo "::notice::Competition template not available in CI; skipping the on-disk submission re-check."
+          fi
       - name: Build static site with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:

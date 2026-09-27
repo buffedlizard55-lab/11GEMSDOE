@@ -1,0 +1,51 @@
+{
+  "checks": {
+    "inside_max": 1.0,
+    "inside_min": 0.0,
+    "inside_out_of_range_pixels": 0,
+    "nan_pixels": 7111787,
+    "nodata_set": true,
+    "outside_finite_pixels": 0,
+    "template_valid_pixels": 5167373
+  },
+  "errors": [],
+  "file": "data/gems-structural-area06-v1.tif",
+  "ok": true,
+  "profile": {
+    "bounds": [
+      243350.0,
+      4135550.0,
+      572550.0,
+      4508550.0
+    ],
+    "count": 1,
+    "crs": "EPSG:32611",
+    "dtype": "float32",
+    "height": 3730,
+    "nodata": NaN,
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "width": 3292
+  },
+  "template_profile": {
+    "crs": "EPSG:32611",
+    "height": 3730,
+    "nodata": NaN,
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "width": 3292
+  },
+  "warnings": []
+}
